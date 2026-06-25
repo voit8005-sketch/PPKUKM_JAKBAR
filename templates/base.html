@@ -45,6 +45,60 @@
         display: none !important;
       }
     </style>
+
+    <!-- Auto-hide navbar on scroll (mobile only) -->
+    <script>
+      (function () {
+        let lastScrollY = 0;
+        let navbarVisible = true;
+        let scrollThreshold = 10; // pixels to scroll before triggering hide
+        let scrollTimeout;
+
+        function handleScroll() {
+          const navbar = document.getElementById("navbar");
+          if (!navbar) return;
+
+          // Only apply on mobile (< 768px)
+          if (window.innerWidth >= 768) {
+            navbar.style.transform = "translateY(0)";
+            navbarVisible = true;
+            return;
+          }
+
+          const currentScrollY = window.scrollY;
+          const scrollDifference = Math.abs(currentScrollY - lastScrollY);
+
+          // Only trigger if scrolled more than threshold
+          if (scrollDifference > scrollThreshold) {
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+              // Scrolling DOWN - hide navbar
+              if (navbarVisible) {
+                navbar.style.transform = "translateY(-100%)";
+                navbarVisible = false;
+              }
+            } else {
+              // Scrolling UP - show navbar
+              if (!navbarVisible) {
+                navbar.style.transform = "translateY(0)";
+                navbarVisible = true;
+              }
+            }
+            lastScrollY = currentScrollY;
+          }
+        }
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+
+        // Reset navbar on window resize (show on desktop)
+        window.addEventListener("resize", function () {
+          const navbar = document.getElementById("navbar");
+          if (window.innerWidth >= 768) {
+            navbar.style.transform = "translateY(0)";
+            navbarVisible = true;
+          }
+        });
+      })();
+    </script>
   </head>
 
   <body class="font-sans min-h-screen transition-colors duration-500 bg-slate-50 dark:bg-gray-950">
@@ -65,7 +119,7 @@
     <div id="progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-500 z-50 transition-all duration-75 rounded-r-full" style="width: 0%"></div>
 
     <!-- ===== NAVBAR ===== -->
-    <nav class="sticky top-0 z-40 border-b border-white/30 dark:border-gray-800/60 bg-white/75 dark:bg-gray-900/75 backdrop-blur-2xl shadow-sm shadow-black/5">
+    <nav id="navbar" class="sticky top-0 z-40 border-b border-white/30 dark:border-gray-800/60 bg-white/75 dark:bg-gray-900/75 backdrop-blur-2xl shadow-sm shadow-black/5 transition-transform duration-300 ease-in-out">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <!-- Logo -->
@@ -241,10 +295,11 @@
             {% endif %}
           </div>
 
-          <!-- Mobile hamburger -->
-          <button @click="mobileNav = !mobileNav" class="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none">
-            <svg :class="mobileNav ? 'hidden' : 'block'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-            <svg :class="mobileNav ? 'block' : 'hidden'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          <!-- Mobile hamburger button -->
+          <button @click="mobileNav = !mobileNav" class="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none" :aria-expanded="mobileNav">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </button>
         </div>
       </div>
@@ -263,7 +318,8 @@
         <div class="max-w-7xl mx-auto px-4 py-3 space-y-1">
           <a
             href="{{ url_for('index') }}"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            @click="mobileNav = false"
+            class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -272,7 +328,8 @@
           </a>
           <a
             href="{{ url_for('profil_organisasi') }}"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            @click="mobileNav = false"
+            class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -282,7 +339,8 @@
 
           <a
             href="{{ url_for('regulasi') }}"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            @click="mobileNav = false"
+            class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
@@ -292,7 +350,8 @@
 
           <a
             href="{{ url_for('calendar') }}"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            @click="mobileNav = false"
+            class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -302,7 +361,8 @@
           {% if current_user.is_authenticated %}
           <a
             href="{{ url_for('dashboard') if current_user.role == 'admin' else url_for('staff_dashboard') }}"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            @click="mobileNav = false"
+            class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -315,10 +375,24 @@
             Dashboard
           </a>
           {% if current_user.role == 'admin' %}
-          <a href="{{ url_for('admin_reviews') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors">Review Berita</a>
-          <a href="{{ url_for('admin_staff_list') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">Kelola Staff</a>
+          <a
+            href="{{ url_for('admin_reviews') }}"
+            @click="mobileNav = false"
+            class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"
+            >Review Berita</a
+          >
+          <a
+            href="{{ url_for('admin_staff_list') }}"
+            @click="mobileNav = false"
+            class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+            >Kelola Staff</a
+          >
           {% endif %}
-          <a href="{{ url_for('logout') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+          <a
+            href="{{ url_for('logout') }}"
+            @click="mobileNav = false"
+            class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+          >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
@@ -327,7 +401,8 @@
           {% else %}
           <a
             href="{{ url_for('login') }}"
-            class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all"
+            @click="mobileNav = false"
+            class="mobile-menu-link flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all"
           >
             Admin Login
           </a>
