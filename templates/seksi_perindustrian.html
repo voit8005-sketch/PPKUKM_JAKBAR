@@ -1,0 +1,354 @@
+{% extends "base.html" %} {% block title %}Seksi Perindustrian - Sudin PPKUKM Jakarta Barat{% endblock %} {% block content %}
+
+<style>
+  @keyframes cycleA {
+    0% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    5% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    40% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    48% {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+  }
+  @keyframes cycleB {
+    0% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    53% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    58% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    93% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+  }
+  .ind-text-slot {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+  }
+  .ind-slot-a {
+    animation: cycleA 7s ease infinite;
+  }
+  .ind-slot-b {
+    animation: cycleB 7s ease infinite;
+  }
+  .ind-sub-slot-a {
+    animation: cycleA 7s ease 0.15s infinite;
+  }
+  .ind-sub-slot-b {
+    animation: cycleB 7s ease 0.15s infinite;
+  }
+
+  @keyframes iBlob1 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(30px, -20px) scale(1.08);
+    }
+    66% {
+      transform: translate(-15px, 15px) scale(0.95);
+    }
+  }
+  @keyframes iBlob2 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    40% {
+      transform: translate(-25px, 20px) scale(1.1);
+    }
+    80% {
+      transform: translate(20px, -10px) scale(0.93);
+    }
+  }
+  @keyframes iBlob3 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(18px, 24px) scale(1.06);
+    }
+  }
+  .i-blob-1 {
+    animation: iBlob1 9s ease-in-out infinite;
+  }
+  .i-blob-2 {
+    animation: iBlob2 12s ease-in-out infinite;
+  }
+  .i-blob-3 {
+    animation: iBlob3 7s ease-in-out infinite;
+  }
+
+  @keyframes iPhotoIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.78) translateY(20px);
+    }
+    65% {
+      transform: scale(1.03) translateY(-4px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  @keyframes iPhotoFloat {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes iRingPulse {
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 0 rgba(129, 140, 248, 0.45),
+        0 0 0 0 rgba(129, 140, 248, 0.2);
+    }
+    50% {
+      box-shadow:
+        0 0 0 12px rgba(129, 140, 248, 0.1),
+        0 0 0 24px rgba(129, 140, 248, 0.05);
+    }
+  }
+  .i-photo-in {
+    animation: iPhotoIn 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+  }
+  .i-photo-float {
+    animation: iPhotoFloat 5s ease-in-out 1.2s infinite;
+  }
+  .i-ring-pulse {
+    animation: iRingPulse 3s ease-in-out 1s infinite;
+  }
+</style>
+
+<!-- ===== PAGE HEADER ===== -->
+<div class="relative overflow-hidden rounded-3xl text-white mb-10 shadow-2xl shadow-indigo-900/40" style="min-height: 420px" data-scroll-reveal>
+  <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800"></div>
+
+  <div class="i-blob-1 absolute w-[220px] h-[220px] rounded-full bg-indigo-400/30 blur-2xl -top-10 -left-10 pointer-events-none"></div>
+  <div class="i-blob-2 absolute w-[180px] h-[180px] rounded-full bg-purple-300/25 blur-2xl bottom-0 right-1/3 pointer-events-none"></div>
+  <div class="i-blob-3 absolute w-[140px] h-[140px] rounded-full bg-violet-400/20 blur-2xl top-1/2 right-8 pointer-events-none"></div>
+
+  <div class="absolute inset-0 opacity-[0.07] pointer-events-none">
+    <svg class="w-full h-full">
+      <defs>
+        <pattern id="hd-ind" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="currentColor" /></pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hd-ind)" />
+    </svg>
+  </div>
+
+  <div class="relative z-10 flex flex-col md:flex-row items-center gap-6 px-10 py-12 md:px-14 md:py-14" style="min-height: 420px">
+    <!-- LEFT: text -->
+    <div class="flex-1 flex flex-col justify-center">
+      <div class="flex items-center gap-2 text-xs text-white/60 mb-6 flex-wrap">
+        <a href="{{ url_for('index') }}" class="hover:text-white transition-colors">Beranda</a>
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        <a href="{{ url_for('profil_organisasi') }}" class="hover:text-white transition-colors">Profil Organisasi</a>
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        <span class="text-white/90 font-semibold">Seksi Perindustrian</span>
+      </div>
+
+      <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-xs font-bold mb-6 uppercase tracking-wide w-fit">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+          />
+        </svg>
+        Unit Kerja
+      </div>
+
+      <div class="relative mb-5" style="height: 52px">
+        <div class="ind-text-slot ind-slot-a">
+          <h1 class="text-3xl md:text-4xl font-black leading-tight" style="text-shadow: 0 2px 16px rgba(0, 0, 0, 0.4)">Seksi Perindustrian</h1>
+        </div>
+        <div class="ind-text-slot ind-slot-b">
+          <h1 class="text-3xl md:text-4xl font-black leading-tight" style="text-shadow: 0 2px 16px rgba(0, 0, 0, 0.4)">Dra. Hermi Andriani, M.A.P</h1>
+        </div>
+      </div>
+
+      <div class="relative" style="height: 76px">
+        <div class="ind-text-slot ind-sub-slot-a items-start">
+          <p class="text-white text-sm md:text-base leading-relaxed max-w-md" style="text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3)">
+            Menyelenggarakan pembinaan, pengembangan, dan pengendalian kegiatan perindustrian dan kewirausahaan di wilayah Kota Administrasi Jakarta Barat.
+          </p>
+        </div>
+        <div class="ind-text-slot ind-sub-slot-b items-start">
+          <span class="inline-flex items-center gap-2 bg-white/15 border border-white/30 rounded-full px-4 py-2 text-sm font-semibold" style="text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2)">
+            <span class="w-2 h-2 rounded-full bg-indigo-300 animate-pulse flex-shrink-0"></span>
+            Kepala Seksi Perindustrian
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: circular photo -->
+    <div class="flex-shrink-0 flex items-center justify-center i-photo-in">
+      <div class="relative i-ring-pulse">
+        <div class="absolute -inset-3 rounded-full bg-gradient-to-br from-indigo-300/50 to-purple-400/30 blur-md"></div>
+        <div class="relative rounded-full p-[3px] bg-gradient-to-br from-indigo-300 via-white/40 to-purple-400 shadow-2xl shadow-indigo-900/50" style="width: 260px; height: 260px">
+          <div class="w-full h-full rounded-full overflow-hidden bg-indigo-800 flex items-center justify-center i-photo-float">
+            <img
+              src="{{ url_for('static', filename='uploads/seksi_Industri.jpeg') }}"
+              alt="Dra. Hermi Andriani, M.A.P"
+              class="w-full h-full object-cover object-top"
+              onerror="
+                this.parentElement.innerHTML =
+                  '<svg class=\'w-28 h-28 text-white/30\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z\'/></svg>'
+              "
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Kedudukan Seksi -->
+<div class="max-w-4xl mx-auto space-y-8 mb-12">
+  <!-- Kedudukan -->
+  <div data-scroll-reveal>
+    <div class="flex items-center gap-3 mb-5">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md shadow-indigo-500/25">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+          />
+        </svg>
+      </div>
+      <h2 class="text-xl font-black text-gray-900 dark:text-white">Kedudukan</h2>
+    </div>
+
+    <div class="space-y-4">
+      <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-6">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 text-xs border border-indigo-200/50">a</div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Seksi Perindustrian dipimpin oleh <span class="font-semibold text-gray-900 dark:text-white">Kepala Seksi Perindustrian</span>.</p>
+        </div>
+      </div>
+      <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-6">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 text-xs border border-indigo-200/50">b</div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+            Kepala Seksi Perindustrian berkedudukan di bawah dan bertanggung jawab kepada <span class="font-semibold text-gray-900 dark:text-white">Kepala Suku Dinas PPKUKM Kota Administrasi</span>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tugas -->
+  <div data-scroll-reveal>
+    <div class="flex items-center justify-between gap-3 mb-5">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md shadow-indigo-500/25">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-black text-gray-900 dark:text-white">Tugas Seksi Perindustrian</h2>
+          <p class="text-xs text-gray-500 dark:text-gray-400">10 tugas pokok yang dilaksanakan</p>
+        </div>
+      </div>
+      <span class="flex-shrink-0 px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs font-bold rounded-full border border-indigo-200/50">10 Tugas</span>
+    </div>
+
+    <div class="space-y-3">
+      {% set tugas_list = [
+        (1, "melaksanakan penumbuhan, pembinaan dan pengembangan wirausaha industri pada wilayah Kota Administrasi"),
+        (2, "melaksanakan perencanaan dan pengembangan perindustrian pada wilayah Kota Administrasi"),
+        (3, "melaksanakan pendampingan sertifikasi produk industri kecil dan menengah"),
+        (4, "melaksanakan pendampingan dan perlindungan hak kekayaan intelektual industri kecil dan menengah"),
+        (5, "melaksanakan pembinaan dan pemberdayaan industri kecil, industri menengah, industri kreatif, industri digital dan industri hijau pada wilayah Kota Administrasi"),
+        (6, "mengelola dan mengembangkan sarana dan prasarana industri kecil, industri menengah, industri kreatif dan industri digital pada wilayah Kota Administrasi"),
+        (7, "melaksanakan pemanfaatan kreativitas dan inovasi untuk industri kreatif dan industri digital pada wilayah Kota Administrasi"),
+        (8, "melaksanakan pengawasan dan pengendalian bidang perindustrian pada wilayah Kota Administrasi"),
+        (9, "melaksanakan verifikasi perizinan atau nonperizinan bidang perindustrian pada wilayah Kota Administrasi"),
+        (10, "melaksanakan pengelolaan tempat kumpul kreatif di wilayah Kota Administrasi")
+      ] %}
+      {% for num, uraian in tugas_list %}
+      <div class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:shadow-indigo-500/5 hover:-translate-y-0.5 transition-all duration-200 p-5">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 text-xs border border-indigo-200/50 dark:border-indigo-800/50">{{ num }}</div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed pt-1">{{ uraian }}.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Stat bar -->
+  <div class="grid grid-cols-3 gap-4" data-scroll-reveal>
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-5 text-center">
+      <p class="text-3xl font-black text-indigo-600 dark:text-indigo-400">10</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">Tugas Pokok</p>
+    </div>
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-5 text-center">
+      <p class="text-3xl font-black text-purple-600 dark:text-purple-400">1</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">Kepala Seksi</p>
+    </div>
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-5 text-center">
+      <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400">5</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">Jenis Industri</p>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="max-w-4xl mx-auto flex flex-col sm:flex-row gap-3 mb-4" data-scroll-reveal>
+  <a
+    href="{{ url_for('subbagian_tata_usaha') }}"
+    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/90 dark:bg-gray-800/90 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all text-sm shadow-sm"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+    Subbagian Tata Usaha
+  </a>
+  <a
+    href="{{ url_for('seksi_perdagangan') }}"
+    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-2xl hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-500/20 transition-all text-sm hover:-translate-y-0.5"
+  >
+    Seksi Perdagangan
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+  </a>
+</div>
+
+{% endblock %}

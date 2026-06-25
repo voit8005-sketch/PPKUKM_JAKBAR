@@ -1,0 +1,560 @@
+{% extends "base.html" %} {% block title %}Semarak Bazar dan Pangan Ramadan 2026 - Sudin PPKUKM Jakarta Barat{% endblock %} {% block content %}
+
+<style>
+  /* ─── HERO: foto menyatu dengan background ─── */
+  .bazar-hero {
+    position: relative;
+    min-height: 460px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 24px;
+  }
+  .bazar-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .bazar-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(120, 40, 5, 0.97) 0%, rgba(146, 64, 14, 0.9) 40%, rgba(180, 83, 9, 0.55) 65%, rgba(194, 65, 12, 0.15) 100%);
+    z-index: 1;
+  }
+  .bazar-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 2.5rem;
+    max-width: 580px;
+  }
+
+  /* ─── GALERI GRID — semua foto tampil sekaligus ─── */
+  .bazar-gallery {
+    width: 100%;
+    position: relative;
+  }
+  .bazar-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  @media (min-width: 640px) {
+    .bazar-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .bazar-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+  }
+  .bazar-grid-item {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #0f172a;
+    cursor: zoom-in;
+    border: 0;
+    padding: 0;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .bazar-grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .bazar-grid-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 40%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+  .bazar-grid-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  }
+  .bazar-grid-item:hover img {
+    transform: scale(1.06);
+  }
+  .bazar-grid-item:hover::after {
+    opacity: 1;
+  }
+  .bazar-grid-item:focus-visible {
+    outline: 3px solid #f97316;
+    outline-offset: 2px;
+  }
+
+  /* ─── VIDEO PLAYER: tidak terpotong ─── */
+  .video-wrap {
+    border-radius: 16px;
+    overflow: hidden;
+    background: #0f172a;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  }
+  .video-wrap video {
+    width: 100%;
+    display: block;
+    max-height: 480px;
+    object-fit: contain; /* video penuh, tidak terpotong */
+    background: #0f172a;
+  }
+
+  /* ─── LIGHTBOX ─── */
+  #bazar-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.94);
+    align-items: center;
+    justify-content: center;
+  }
+  #bazar-lightbox.open {
+    display: flex;
+  }
+  #bazar-lightbox img {
+    max-width: 95vw;
+    max-height: 92vh;
+    object-fit: contain;
+    border-radius: 12px;
+  }
+  #bazar-lb-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  #bazar-lb-close:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+  #bazar-lb-prev,
+  #bazar-lb-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #bazar-lb-prev {
+    left: 16px;
+  }
+  #bazar-lb-next {
+    right: 16px;
+  }
+  #bazar-lb-prev:hover,
+  #bazar-lb-next:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+  #bazar-lb-counter {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+  }
+
+  /* ─── COLLAPSIBLE HEADER (buka/tutup) ─── */
+  .collapse-toggle {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+  }
+  .collapse-toggle:hover .collapse-chev {
+    color: #f97316;
+  }
+  .collapse-toggle[aria-expanded="false"] .collapse-chev {
+    transform: rotate(-90deg);
+  }
+  .collapse-panel-hidden {
+    display: none !important;
+  }
+
+  /* ─── Dot pattern overlay ─── */
+  .dot-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #fff 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+</style>
+
+<!-- ═══════════════════════════════════════
+     HERO — foto 4.jpg menyatu dengan background
+═══════════════════════════════════════ -->
+<div class="bazar-hero shadow-2xl shadow-orange-900/30 mb-10 text-white" data-scroll-reveal>
+  <!-- Background foto 4.jpg -->
+  <div class="bazar-hero-bg" style="background-image: url('{{ url_for('static', filename='uploads/kegiatan/event/copy.jpg') }}')"></div>
+
+  <!-- Gradient overlay menyatu -->
+  <div class="bazar-hero-overlay"></div>
+  <div class="dot-pattern" style="z-index: 2; opacity: 0.05"></div>
+
+  <!-- Konten teks -->
+  <div class="bazar-hero-content">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-white/60 mb-6 flex-wrap">
+      <a href="{{ url_for('index') }}" class="hover:text-white transition-colors">Beranda</a>
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+      <span class="text-white/90 font-semibold">Berita Kegiatan</span>
+    </div>
+
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 bg-white/15 border border-white/25 rounded-full px-4 py-1.5 text-xs font-bold mb-5 uppercase tracking-wide">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      Bazar &amp; Pangan
+    </div>
+
+    <h1 class="text-2xl md:text-4xl font-black leading-tight mb-5" style="text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6)">Semarak Bazar dan Pangan<br />Ramadan 1447 H</h1>
+
+    <div class="flex flex-col gap-2.5 text-sm text-white/85">
+      <span class="flex items-center gap-2">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        11 – 13 Maret 2026
+      </span>
+      <span class="flex items-center gap-2">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        Parkir Selatan Kantor Walikota Jakarta Barat
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════ -->
+<div class="max-w-4xl mx-auto space-y-10 mb-12">
+  <!-- STAT CARDS -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" data-scroll-reveal>
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-5 text-center">
+      <p class="text-3xl font-black text-orange-500">40</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">Peserta Bazar</p>
+    </div>
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-5 text-center">
+      <p class="text-3xl font-black text-emerald-500">30</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">UMKM Binaan</p>
+    </div>
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-5 text-center">
+      <p class="text-3xl font-black text-blue-500">200</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">Paket/Hari</p>
+    </div>
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-5 text-center">
+      <p class="text-3xl font-black text-red-500">3</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">Hari Kegiatan</p>
+    </div>
+  </div>
+
+  <!-- ══ GALERI FOTO — bisa buka/tutup ══ -->
+  <div data-scroll-reveal>
+    <button type="button" class="collapse-toggle w-full flex items-center justify-between mb-4" data-target="foto-panel" aria-expanded="true" aria-controls="foto-panel">
+      <h2 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2">
+        <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        Galeri Foto
+      </h2>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full font-medium">10 Foto</span>
+        <svg class="collapse-chev w-5 h-5 text-gray-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </button>
+
+    <div class="bazar-gallery" id="foto-panel">
+      <!-- Grid: semua foto tampil sekaligus, klik → lightbox -->
+      <div class="bazar-grid">
+        {% for n in range(1, 11) %}
+        <button type="button" class="bazar-grid-item" data-idx="{{ n - 1 }}" aria-label="Lihat foto {{ n }}">
+          <img src="{{ url_for('static', filename='uploads/kegiatan/event/' ~ n ~ '.jpg') }}" alt="Foto Bazar {{ n }}" loading="lazy" decoding="async" />
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GALERI VIDEO — bisa buka/tutup ══ -->
+  <div data-scroll-reveal>
+    <button type="button" class="collapse-toggle w-full flex items-center justify-between mb-4" data-target="video-panel" aria-expanded="true" aria-controls="video-panel">
+      <h2 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2">
+        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        Galeri Video
+      </h2>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full font-medium">2 Video</span>
+        <svg class="collapse-chev w-5 h-5 text-gray-500 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </button>
+
+    <div id="video-panel" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <!-- Video 1 -->
+      <div class="video-wrap">
+        <video controls preload="metadata" poster="{{ url_for('static', filename='uploads/kegiatan/event/3.jpg') }}">
+          <source src="{{ url_for('static', filename='uploads/kegiatan/event/bazar.mp4') }}" type="video/mp4" />
+        </video>
+        <div class="px-4 py-3">
+          <p class="text-white text-sm font-semibold">Video Kegiatan Bazar</p>
+          <p class="text-gray-400 text-xs mt-0.5">Semarak Bazar dan Pangan Ramadan 1447 H</p>
+        </div>
+      </div>
+      <!-- Video 2 -->
+      <div class="video-wrap">
+        <video controls preload="metadata" poster="{{ url_for('static', filename='uploads/kegiatan/event/5.jpg') }}">
+          <source src="{{ url_for('static', filename='uploads/kegiatan/event/bazaar.mp4') }}" type="video/mp4" />
+        </video>
+        <div class="px-4 py-3">
+          <p class="text-white text-sm font-semibold">Liputan Bazar Ramadan</p>
+          <p class="text-gray-400 text-xs mt-0.5">Dokumentasi lengkap kegiatan tiga hari</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ARTIKEL ══ -->
+  <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-100 dark:border-gray-700 shadow-lg p-8 md:p-10" data-scroll-reveal>
+    <!-- Highlights -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div class="flex items-center gap-3 bg-orange-50 dark:bg-orange-900/20 rounded-2xl p-4">
+        <div class="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-800/50 flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-xl font-black text-orange-700 dark:text-orange-300">40</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Peserta Bazar</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 bg-red-50 dark:bg-red-900/20 rounded-2xl p-4">
+        <div class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-800/50 flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-xl font-black text-red-700 dark:text-red-300">5.000</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Target Kantong Darah</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-4">
+        <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-800/50 flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <div>
+          <p class="text-sm font-black text-amber-700 dark:text-amber-300">Rp50–150rb</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Paket Sembako</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Isi artikel -->
+    <div class="space-y-5 text-[15px] leading-relaxed text-gray-700 dark:text-gray-300">
+      <p>
+        Guna mengantisipasi kenaikan harga bahan pokok menjelang Hari Raya Idul Fitri 1447 Hijriah, <strong class="text-gray-900 dark:text-white">Pemerintah Kota Administrasi Jakarta Barat</strong> membuka kegiatan
+        <strong class="text-orange-600 dark:text-orange-400">"Semarak Bazar dan Pangan Ramadan"</strong> di Parkir Selatan Kantor Walikota Jakarta Barat pada Rabu (11/3).
+      </p>
+
+      <p>
+        Acara berlangsung selama <strong class="text-gray-900 dark:text-white">tiga hari (11–13 Maret 2026)</strong> menjadi ajang kolaborasi besar antara pemerintah, BUMD, dan sektor swasta untuk menjaga ketahanan pangan masyarakat
+        sekaligus memajukan produk lokal.
+      </p>
+
+      <p>
+        Dalam laporannya, <strong class="text-gray-900 dark:text-white">Ketua Suku Dinas PPKUKM Jakarta Barat, Iqbal Idham Ramid</strong>, menyampaikan bahwa bazar ini diikuti oleh
+        <strong class="text-orange-600 dark:text-orange-400">40 peserta</strong> — terdiri dari 30 UMKM binaan Sudin PPKUKM, 8 peserta dari PKK, dan 2 peserta dari Dekranasda.
+      </p>
+
+      <!-- Info box sembako -->
+      <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800/50 rounded-2xl p-5">
+        <p class="text-xs font-bold text-orange-700 dark:text-orange-400 uppercase tracking-wider mb-3">Paket Sembako Murah</p>
+        <div class="flex flex-wrap gap-2 mb-2">
+          <span class="bg-white dark:bg-gray-800 border border-orange-200 dark:border-orange-700 rounded-xl px-3 py-1.5 text-sm font-black text-orange-700 dark:text-orange-300">Rp 50.000</span>
+          <span class="bg-white dark:bg-gray-800 border border-orange-200 dark:border-orange-700 rounded-xl px-3 py-1.5 text-sm font-black text-orange-700 dark:text-orange-300">Rp 100.000</span>
+          <span class="bg-white dark:bg-gray-800 border border-orange-200 dark:border-orange-700 rounded-xl px-3 py-1.5 text-sm font-black text-orange-700 dark:text-orange-300">Rp 150.000</span>
+        </div>
+        <p class="text-xs text-gray-500 dark:text-gray-400">Kuota maksimal 200 paket per hari per mitra penyedia</p>
+      </div>
+
+      <p>
+        <strong class="text-gray-900 dark:text-white">Wali Kota Jakarta Barat, Iin Mutmainnah</strong>, yang hadir membuka acara secara resmi memberikan apresiasi tinggi terhadap sinergi lintas sektor ini. Beliau menekankan bahwa bazar ini
+        bukan sekadar tempat jual beli, melainkan <strong class="text-gray-900 dark:text-white">wadah pemberdayaan ekonomi</strong>.
+      </p>
+
+      <p>
+        Selain aspek ekonomi, Wali Kota juga mengimbau seluruh ASN dan masyarakat Jakarta Barat untuk turut serta pada <strong class="text-gray-900 dark:text-white">aksi donor darah (9–13 Maret 2026) di Ruang Ali Sadikin</strong>, dengan
+        target pengumpulan <strong class="text-red-600 dark:text-red-400">5.000 kantong darah</strong>.
+      </p>
+
+      <p>Menutup sambutannya, Wali Kota mengajak seluruh ASN dan masyarakat yang hadir untuk aktif berbelanja.</p>
+
+      <!-- Tamu undangan -->
+      <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-2xl p-5">
+        <p class="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider mb-3">Tamu Undangan</p>
+        <ul class="space-y-2">
+          {% for t in [ 'Ketua TP PKK DKI Jakarta — Endang Nugrahani Pramono', 'Wakil Ketua TP PKK DKI Jakarta — Dewi Rano', 'Ketua DWP DKI Jakarta — Lisniawati Uus', 'Ketua TP PKK Kota Jakarta Barat — Ety Syartika', 'Para Pimpinan Tingkat
+          Kota Jakarta Barat dan tamu undangan lainnya' ] %}
+          <li class="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 flex-shrink-0"></span>{{ t }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instagram CTA -->
+  <div class="bg-gradient-to-br from-purple-600 via-pink-600 to-rose-500 rounded-3xl p-8 text-white text-center shadow-xl" data-scroll-reveal>
+    <div class="w-14 h-14 bg-white/15 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+      <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+        <path
+          d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
+        />
+      </svg>
+    </div>
+    <h3 class="text-xl font-black mb-2">Lihat Lebih Banyak Dokumentasi</h3>
+    <p class="text-white/80 text-sm mb-6 max-w-sm mx-auto">Ikuti akun Instagram resmi kami untuk foto dan video lengkap kegiatan Semarak Bazar dan Pangan Ramadan.</p>
+    <a
+      href="https://www.instagram.com/sudinppkukmjakbar/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 px-7 py-3 bg-white text-pink-600 font-bold rounded-2xl hover:bg-pink-50 shadow-lg transition-all hover:-translate-y-0.5 text-sm"
+    >
+      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path
+          d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
+        />
+      </svg>
+      @sudinppkukmjakbar
+    </a>
+  </div>
+
+  <!-- Kembali -->
+  <div data-scroll-reveal>
+    <a
+      href="{{ url_for('index') }}"
+      class="inline-flex items-center gap-2 px-6 py-3 bg-white/90 dark:bg-gray-800/90 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all text-sm shadow-sm"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+      Kembali ke Beranda
+    </a>
+  </div>
+</div>
+
+<!-- ═══════ LIGHTBOX ═══════ -->
+<div id="bazar-lightbox" onclick="if (event.target === this) lbClose();">
+  <span id="bazar-lb-close" onclick="lbClose()">&#x2715;</span>
+  <button id="bazar-lb-prev" onclick="lbNav(-1)">&#8249;</button>
+  <img id="bazar-lb-img" src="" alt="" />
+  <button id="bazar-lb-next" onclick="lbNav(1)">&#8250;</button>
+  <div id="bazar-lb-counter"></div>
+</div>
+
+<script>
+  const FOTO_SRCS = [
+    {% for n in range(1, 11) %}
+    "{{ url_for('static', filename='uploads/kegiatan/event/' ~ n ~ '.jpg') }}"{{ "," if not loop.last }}
+    {% endfor %}
+  ]
+
+  /* ── Collapsible section: klik header → buka/tutup (event delegation, anti double-bind) ── */
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".collapse-toggle");
+    if (!btn) return;
+    const panel = document.getElementById(btn.dataset.target);
+    if (!panel) return;
+    const willHide = !panel.classList.contains("collapse-panel-hidden");
+    panel.classList.toggle("collapse-panel-hidden", willHide);
+    btn.setAttribute("aria-expanded", String(!willHide));
+  });
+
+  /* ── Grid klik → lightbox ── */
+  document.querySelectorAll(".bazar-grid-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      const idx = parseInt(item.dataset.idx, 10);
+      if (!isNaN(idx)) lbOpen(idx);
+    });
+  });
+
+  /* ── Lightbox ── */
+  let lbIdx = 0;
+  function lbOpen(i) {
+    lbIdx = i;
+    lbShow();
+    document.getElementById("bazar-lightbox").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function lbShow() {
+    const img = document.getElementById("bazar-lb-img");
+    img.src = FOTO_SRCS[lbIdx];
+    document.getElementById("bazar-lb-counter").textContent = (lbIdx + 1) + " / " + FOTO_SRCS.length;
+  }
+  function lbNav(dir) {
+    lbIdx = (lbIdx + dir + FOTO_SRCS.length) % FOTO_SRCS.length;
+    lbShow();
+  }
+  function lbClose() {
+    document.getElementById("bazar-lightbox").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  document.addEventListener("keydown", (e) => {
+    if (!document.getElementById("bazar-lightbox").classList.contains("open")) return;
+    if (e.key === "Escape") lbClose();
+    if (e.key === "ArrowLeft") lbNav(-1);
+    if (e.key === "ArrowRight") lbNav(1);
+  });
+</script>
+
+{% endblock %}

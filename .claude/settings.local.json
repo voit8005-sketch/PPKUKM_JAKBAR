@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pkill -f \"python.*app.py\")",
+      "Bash(\"F:/Website Sudin PPKUKM/venv/Scripts/python.exe\" app.py)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/)",
+      "Bash(claude *)",
+      "Bash(gh pr *)",
+      "Bash(npm install *)",
+      "Bash(python -m pip install python-dotenv)",
+      "mcp__ide__getDiagnostics",
+      "Bash(code *)",
+      "Bash(.venv/Scripts/python.exe reset_admin.py)",
+      "Bash(.venv/Scripts/python.exe -c 'from email_validator import validate_email, EmailNotValidError *)",
+      "Bash(venv/Scripts/python.exe *)",
+      "Bash(where python *)",
+      "Bash(F:/foto/foto Ilham/python.exe *)",
+      "Bash(F:/Website Sudin PPKUKM/venv/Scripts/python.exe *)",
+      "PowerShell(Get-ChildItem -Path \"F:\\\\Website Sudin PPKUKM\" -Recurse -Depth 3 | Where-Object { $_.FullName -notmatch \"node_modules|venv|__pycache__|\\\\.git\" } | Select-Object FullName, PSIsContainer | Format-Table -AutoSize)",
+      "PowerShell(& \"F:\\\\Website Sudin PPKUKM\\\\venv\\\\Scripts\\\\python.exe\" -c \"import docx; print\\('ok'\\)\" 2>&1)",
+      "PowerShell(& \"F:\\\\Website Sudin PPKUKM\\\\venv\\\\Scripts\\\\pip.exe\" install python-docx 2>&1 | Select-Object -Last 5)",
+      "PowerShell(& \"F:\\\\Website Sudin PPKUKM\\\\venv\\\\Scripts\\\\python.exe\" \"F:\\\\Website Sudin PPKUKM\\\\generate_bab3.py\")",
+      "Bash(venv\\\\Scripts\\\\python.exe -c \"import pkg_resources; pkgs=[p.key for p in pkg_resources.working_set]; print\\('\\\\n'.join\\(sorted\\(pkgs\\)\\)\\)\")",
+      "mcp__plugin_claude-mem_mcp-search__get_observations",
+      "PowerShell(& \"F:\\\\Website Sudin PPKUKM\\\\venv\\\\Scripts\\\\python.exe\" \"F:\\\\Website Sudin PPKUKM\\\\generate_bab3.py\" 2>&1)",
+      "Bash(python -c \"import docx; print\\('python-docx OK'\\)\")",
+      "Bash(venv\\\\Scripts\\\\pip install *)"
+    ]
+  }
+}

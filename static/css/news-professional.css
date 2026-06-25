@@ -1,0 +1,287 @@
+/* CNN/Kompas Professional News Site Styles - BLACKBOXAI */
+* {
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    sans-serif;
+}
+
+/* Breaking News Ticker */
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Category Tabs */
+.category-tab {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-tab.active {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.category-tab:not(.active):hover {
+  transform: translateY(-1px);
+}
+
+/* 3D Hero Globe */
+.3d-hero {
+  animation: fadeInUp 1s ease-out;
+}
+
+.three-container {
+  cursor: grab;
+}
+
+.three-container:active {
+  cursor: grabbing;
+}
+
+#ukm-globe {
+  border-radius: inherit;
+  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.25));
+}
+
+/* News Grid Enhancements */
+.featured-article img {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.news-card img,
+.list-news-item img {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover .news-card img,
+.group:hover .list-news-item img {
+  transform: scale(1.05);
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Headline Badge */
+span.inline-block.bg-gradient-to-r {
+  animation: pulse 2s infinite;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+/* Trending Numbers */
+span.inline-flex.items-center.justify-center.w-7 {
+  animation: bounce 2s infinite;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5);
+}
+
+/* Typography Polish */
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 800 900;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.text-3xl.font-black {
+  font-size: clamp(1.875rem, 4vw, 3.75rem);
+}
+
+/* Card Shadows CNN Style */
+.rounded-2xl.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.rounded-2xl:hover {
+  box-shadow: 0 35px 60px -12px rgba(59, 130, 246, 0.4);
+  transform: translateY(-4px);
+}
+
+/* Sidebar Sticky */
+aside [class*="sticky"] {
+  transition: all 0.3s ease;
+}
+
+/* Responsive News Grid */
+@media (max-width: 1024px) {
+  .grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .3d-hero canvas {
+    height: 350px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .animate-marquee {
+    animation-duration: 35s;
+  }
+
+  .category-tab {
+    min-width: 80px;
+    text-align: center;
+  }
+
+  h2.text-3xl {
+    font-size: 1.875rem;
+  }
+}
+
+/* Dark Mode Polish */
+.dark .bg-gradient-to-r.from-red-600 {
+  background: linear-gradient(to right, #dc2626, #ea580c, #dc2626);
+}
+
+.dark .category-tab:hover {
+  filter: brightness(1.1);
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* News Title Click Enhancement */
+.news-title {
+  transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+}
+.news-title:hover {
+  color: #2563eb !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.news-title.font-black {
+  font-weight: 900 !important;
+}
+
+/* News Meta (date/location) */
+.news-meta {
+  opacity: 0.8;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+.news-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Ensure img thumbnails work */
+.news-card img,
+.list-news-item img,
+.trending-img {
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+.group:hover .news-card img,
+.group:hover .list-news-item img {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Terkini Slider Card Styling */
+.terkini-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.terkini-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.terkini-card h3,
+.terkini-card p,
+.terkini-card span {
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.terkini-card p {
+  white-space: pre-wrap;
+}
+
+.terkini-card:hover h3 {
+  color: #2563eb;
+}
+
+.terkini-card:hover p {
+  color: #334155;
+}
+
+.terkini-card .line-clamp-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 4;
+}
+
+.terkini-slide-btn.active,
+.terkini-slide-btn[aria-current="true"] {
+  background: rgb(37 99 235 / 0.15);
+  border-color: rgb(37 99 235 / 0.5);
+  color: rgb(37 99 235);
+  font-weight: 900;
+}
+
+.terkini-slide-btn:hover {
+  transform: translateY(-1px);
+}
+
+.terkini-card:hover .text-[11px],
+.terkini-card:hover .text-sm,
+.terkini-card:hover .text-lg {
+  color: #1d4ed8;
+}
+
+.content-section {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terkini-slide-panel {
+  min-height: 1px;
+}
+
+@media (max-width: 768px) {
+  .terkini-card {
+    min-height: auto;
+  }
+}

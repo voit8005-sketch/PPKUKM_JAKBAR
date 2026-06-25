@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+{% block title %}Daftar - Sudin PPKUKM Jakarta Barat{% endblock %}
+{% block content %}
+
+<div class="min-h-[80vh] flex items-center justify-center py-10">
+  <div class="w-full max-w-md">
+
+    <!-- Card -->
+    <div class="relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-black/10 dark:shadow-black/40 border border-white/60 dark:border-gray-700/50 overflow-hidden">
+      <!-- Top gradient accent bar -->
+      <div class="h-1 bg-gradient-to-r from-emerald-500 via-blue-500 to-indigo-500"></div>
+
+      <div class="p-8 sm:p-10">
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-blue-600 shadow-lg shadow-emerald-500/30 mb-5 relative">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+            </svg>
+            <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-emerald-400/20 to-transparent animate-pulse"></div>
+          </div>
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Buat Akun Baru</h1>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Bergabunglah dengan komunitas PPKUKM Jakarta Barat</p>
+        </div>
+
+        <!-- Form -->
+        <form method="POST" id="registerForm" class="space-y-5" autocomplete="on">
+          <!-- Username -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Nama Pengguna</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <svg style="width:18px;height:18px" class="text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+              </div>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                required
+                minlength="3"
+                autocomplete="username"
+                class="w-full pl-10 pr-10 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200"
+                placeholder="nama_pengguna"
+              />
+              <div id="username-indicator" class="absolute inset-y-0 right-0 pr-3.5 flex items-center hidden"></div>
+            </div>
+            <div id="username-feedback" class="mt-1.5 text-xs hidden"></div>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Alamat Email</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <svg style="width:18px;height:18px" class="text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                </svg>
+              </div>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                required
+                autocomplete="email"
+                class="w-full pl-10 pr-10 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200"
+                placeholder="email@contoh.com"
+              />
+              <div id="email-indicator" class="absolute inset-y-0 right-0 pr-3.5 flex items-center hidden"></div>
+            </div>
+            <div id="email-feedback" class="mt-1.5 text-xs hidden"></div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Kata Sandi</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <svg style="width:18px;height:18px" class="text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+              </div>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                required
+                minlength="12"
+                autocomplete="new-password"
+                class="w-full pl-10 pr-11 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200"
+                placeholder="Min. 12 karakter"
+              />
+              <button type="button" onclick="togglePwd(this)" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" title="Tampilkan/Sembunyikan kata sandi">
+                <!-- Mata terbuka: password terlihat (awalnya tersembunyi) -->
+                <svg class="eye-open" style="display:none;width:18px;height:18px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                <!-- Mata tertutup: password tersembunyi (awalnya terlihat) -->
+                <svg class="eye-closed" style="width:18px;height:18px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+              </button>
+            </div>
+            <!-- Password strength bars (5 kriteria) -->
+            <div class="mt-2.5">
+              <div class="flex gap-1 mb-1.5">
+                <div id="bar-1" class="h-1.5 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 transition-all duration-300"></div>
+                <div id="bar-2" class="h-1.5 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 transition-all duration-300"></div>
+                <div id="bar-3" class="h-1.5 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 transition-all duration-300"></div>
+                <div id="bar-4" class="h-1.5 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 transition-all duration-300"></div>
+                <div id="bar-5" class="h-1.5 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 transition-all duration-300"></div>
+              </div>
+              <p id="strength-text" class="text-xs text-gray-400 dark:text-gray-500 font-medium"></p>
+            </div>
+            <!-- Checklist persyaratan -->
+            <ul class="mt-2 grid grid-cols-1 gap-y-1" id="pw-requirements">
+              <li id="req-length"  class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 transition-colors"><span class="req-dot w-3.5 h-3.5 rounded-full border-2 border-gray-300 dark:border-gray-600 flex-shrink-0 transition-all"></span>Min. 12 karakter</li>
+              <li id="req-upper"   class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 transition-colors"><span class="req-dot w-3.5 h-3.5 rounded-full border-2 border-gray-300 dark:border-gray-600 flex-shrink-0 transition-all"></span>Huruf besar (A-Z)</li>
+              <li id="req-lower"   class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 transition-colors"><span class="req-dot w-3.5 h-3.5 rounded-full border-2 border-gray-300 dark:border-gray-600 flex-shrink-0 transition-all"></span>Huruf kecil (a-z)</li>
+              <li id="req-digit"   class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 transition-colors"><span class="req-dot w-3.5 h-3.5 rounded-full border-2 border-gray-300 dark:border-gray-600 flex-shrink-0 transition-all"></span>Angka (0-9)</li>
+              <li id="req-special" class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 transition-colors"><span class="req-dot w-3.5 h-3.5 rounded-full border-2 border-gray-300 dark:border-gray-600 flex-shrink-0 transition-all"></span>Simbol (!@#$%^&amp;*...)</li>
+            </ul>
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            class="w-full py-3 px-6 mt-2 bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-sm"
+          >
+            Buat Akun
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="relative my-6">
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200 dark:border-gray-700"></div></div>
+          <div class="relative flex justify-center">
+            <span class="px-3 bg-white dark:bg-gray-900 text-xs text-gray-400 dark:text-gray-500">atau</span>
+          </div>
+        </div>
+
+        <!-- Login link -->
+        <p class="text-center text-sm text-gray-500 dark:text-gray-400">
+          Sudah punya akun?
+          <a href="{{ url_for('login') }}" class="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline transition-colors">
+            Masuk di sini
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <p class="text-center text-xs text-gray-400 dark:text-gray-600 mt-6">
+      Portal Resmi Sudin PPKUKM &bull; Kota Administrasi Jakarta Barat
+    </p>
+  </div>
+</div>
+
+<script>
+// Password strength indicator — 5 kriteria sesuai server-side validation
+const pwInput = document.getElementById('password');
+const bars = [
+  document.getElementById('bar-1'),
+  document.getElementById('bar-2'),
+  document.getElementById('bar-3'),
+  document.getElementById('bar-4'),
+  document.getElementById('bar-5')
+];
+const strengthText = document.getElementById('strength-text');
+
+// Checklist items
+const reqMap = {
+  'req-length':  val => val.length >= 12,
+  'req-upper':   val => /[A-Z]/.test(val),
+  'req-lower':   val => /[a-z]/.test(val),
+  'req-digit':   val => /[0-9]/.test(val),
+  'req-special': val => /[!@#$%^&*()\-_=+\[\]{};:'",.<>?/\\|`~]/.test(val)
+};
+
+const barColors = ['bg-red-400', 'bg-orange-400', 'bg-yellow-400', 'bg-blue-500', 'bg-emerald-500'];
+const labels = ['Sangat Lemah', 'Lemah', 'Sedang', 'Kuat', 'Sangat Kuat'];
+
+if (pwInput) {
+  pwInput.addEventListener('input', function() {
+    const val = this.value;
+
+    // Hitung skor dari 5 kriteria
+    let score = 0;
+    Object.entries(reqMap).forEach(([id, test]) => {
+      const passed = test(val);
+      if (passed) score++;
+
+      // Update tampilan checklist
+      const li = document.getElementById(id);
+      const dot = li.querySelector('.req-dot');
+      if (passed) {
+        li.classList.remove('text-gray-400', 'dark:text-gray-500');
+        li.classList.add('text-emerald-600', 'dark:text-emerald-400');
+        dot.className = 'req-dot w-3.5 h-3.5 rounded-full flex-shrink-0 transition-all bg-emerald-500 border-2 border-emerald-500';
+        dot.innerHTML = '<svg viewBox="0 0 10 10" fill="none" class="w-full h-full"><path d="M2 5l2.5 2.5L8 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      } else {
+        li.classList.remove('text-emerald-600', 'dark:text-emerald-400');
+        li.classList.add('text-gray-400', 'dark:text-gray-500');
+        dot.className = 'req-dot w-3.5 h-3.5 rounded-full border-2 border-gray-300 dark:border-gray-600 flex-shrink-0 transition-all';
+        dot.innerHTML = '';
+      }
+    });
+
+    // Update strength bars
+    bars.forEach((bar, i) => {
+      bar.className = 'h-1.5 flex-1 rounded-full transition-all duration-300';
+      if (val.length === 0) {
+        bar.classList.add('bg-gray-200', 'dark:bg-gray-700');
+      } else if (i < score) {
+        bar.classList.add(barColors[score - 1] || 'bg-emerald-500');
+      } else {
+        bar.classList.add('bg-gray-200', 'dark:bg-gray-700');
+      }
+    });
+
+    // Update strength label
+    if (val.length === 0) {
+      strengthText.textContent = '';
+    } else {
+      const levelLabel = labels[score - 1] || 'Sangat Lemah';
+      strengthText.textContent = 'Kekuatan: ' + levelLabel;
+      const colorClass = score === 5
+        ? 'text-emerald-500 dark:text-emerald-400'
+        : score >= 4 ? 'text-blue-500'
+        : score >= 3 ? 'text-yellow-500'
+        : score >= 2 ? 'text-orange-400'
+        : 'text-red-400';
+      strengthText.className = 'text-xs font-medium transition-colors ' + colorClass;
+    }
+  });
+}
+
+// Username availability check
+let usernameTimer;
+const usernameInput = document.getElementById('username');
+const usernameIndicator = document.getElementById('username-indicator');
+const usernameFeedback = document.getElementById('username-feedback');
+
+if (usernameInput) {
+  usernameInput.addEventListener('input', function() {
+    clearTimeout(usernameTimer);
+    const val = this.value.trim();
+    if (val.length < 3) {
+      usernameIndicator.classList.add('hidden');
+      usernameFeedback.classList.add('hidden');
+      return;
+    }
+    usernameTimer = setTimeout(async () => {
+      try {
+        const res = await fetch('/api/check-username', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ username: val }) });
+        const data = await res.json();
+        usernameIndicator.classList.remove('hidden');
+        usernameFeedback.classList.remove('hidden');
+        if (data.available) {
+          usernameIndicator.innerHTML = '<svg style="width:18px;height:18px" class="text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>';
+          usernameFeedback.textContent = 'Nama pengguna tersedia';
+          usernameFeedback.className = 'mt-1.5 text-xs text-emerald-500';
+        } else {
+          usernameIndicator.innerHTML = '<svg style="width:18px;height:18px" class="text-red-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>';
+          usernameFeedback.textContent = 'Nama pengguna sudah dipakai';
+          usernameFeedback.className = 'mt-1.5 text-xs text-red-400';
+        }
+      } catch(e) {}
+    }, 600);
+  });
+}
+</script>
+{% endblock %}

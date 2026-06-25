@@ -1,0 +1,824 @@
+{% extends "base.html" %} {% block title %}Profil Organisasi - Sudin PPKUKM Jakarta Barat{% endblock %} {% block content %}
+
+<style>
+  /* ── TEXT SLOTS (profil) ── */
+  @keyframes poCycleA {
+    0% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    5% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    40% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    48% {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+  }
+  @keyframes poCycleB {
+    0% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    53% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    58% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    93% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+  }
+  .po-text-slot {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+  }
+  .po-slot-a {
+    animation: poCycleA 7s ease infinite;
+  }
+  .po-slot-b {
+    animation: poSycleB 7s ease infinite;
+  }
+  .po-sub-slot-a {
+    animation: poCycleA 7s ease 0.15s infinite;
+  }
+  .po-sub-slot-b {
+    animation: poSycleB 7s ease 0.15s infinite;
+  }
+
+  /* fix typo — keep both names so both work */
+  .po-slot-b,
+  .po-sub-slot-b {
+    animation-name: poSycleB;
+  }
+  @keyframes poSycleB {
+    0% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    53% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    58% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    93% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+  }
+  .po-slot-b {
+    animation: poSycleB 7s ease infinite;
+  }
+  .po-sub-slot-b {
+    animation: poSycleB 7s ease 0.15s infinite;
+  }
+
+  /* ── BACKGROUND BLOBS (profil) ── */
+  @keyframes poBlob1 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(25px, -18px) scale(1.07);
+    }
+    66% {
+      transform: translate(-12px, 14px) scale(0.94);
+    }
+  }
+  @keyframes poBlob2 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    40% {
+      transform: translate(-20px, 18px) scale(1.09);
+    }
+    80% {
+      transform: translate(18px, -8px) scale(0.92);
+    }
+  }
+  @keyframes poBlob3 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(15px, 20px) scale(1.05);
+    }
+  }
+  .po-blob-1 {
+    animation: poBlob1 9s ease-in-out infinite;
+  }
+  .po-blob-2 {
+    animation: poBlob2 12s ease-in-out infinite;
+  }
+  .po-blob-3 {
+    animation: poBlob3 7s ease-in-out infinite;
+  }
+
+  /* ── PHOTO (profil) ── */
+  @keyframes poPhotoIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.78) translateY(20px);
+    }
+    65% {
+      transform: scale(1.03) translateY(-4px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  @keyframes poPhotoFloat {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes poRingPulse {
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 0 rgba(99, 102, 241, 0.45),
+        0 0 0 0 rgba(99, 102, 241, 0.2);
+    }
+    50% {
+      box-shadow:
+        0 0 0 12px rgba(99, 102, 241, 0.1),
+        0 0 0 24px rgba(99, 102, 241, 0.05);
+    }
+  }
+  .po-photo-in {
+    animation: poPhotoIn 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+  }
+  .po-photo-float {
+    animation: poPhotoFloat 5s ease-in-out 1.2s infinite;
+  }
+  .po-ring-pulse {
+    animation: poRingPulse 3s ease-in-out 1s infinite;
+  }
+</style>
+
+<!-- Page Header -->
+<div class="relative overflow-hidden rounded-3xl text-white mb-12 shadow-2xl shadow-blue-900/40" style="min-height: 420px" data-scroll-reveal>
+  <!-- Base gradient -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-700 to-blue-900"></div>
+
+  <!-- Animated blobs -->
+  <div class="po-blob-1 absolute w-[220px] h-[220px] rounded-full bg-blue-400/30 blur-2xl -top-10 -left-10 pointer-events-none"></div>
+  <div class="po-blob-2 absolute w-[180px] h-[180px] rounded-full bg-indigo-300/25 blur-2xl bottom-0 right-1/3 pointer-events-none"></div>
+  <div class="po-blob-3 absolute w-[140px] h-[140px] rounded-full bg-violet-400/20 blur-2xl top-1/2 right-8 pointer-events-none"></div>
+
+  <!-- Grid pattern -->
+  <div class="absolute inset-0 opacity-[0.07] pointer-events-none">
+    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="po-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="1" /></pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#po-grid)" />
+    </svg>
+  </div>
+
+  <!-- Layout: text left + photo right -->
+  <div class="relative z-10 flex flex-col md:flex-row items-center gap-6 px-10 py-12 md:px-14 md:py-14" style="min-height: 420px">
+    <!-- LEFT: text -->
+    <div class="flex-1 flex flex-col justify-center">
+      <!-- Breadcrumb -->
+      <div class="flex items-center gap-2 text-xs text-white/60 mb-6 flex-wrap">
+        <a href="{{ url_for('index') }}" class="hover:text-white transition-colors">Beranda</a>
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        <span class="text-white/90 font-semibold">Profil</span>
+      </div>
+
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-xs font-bold mb-6 uppercase tracking-wide w-fit">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+        Tentang Kami
+      </div>
+
+      <!-- Animated title -->
+      <div class="relative mb-5" style="height: 56px">
+        <div class="po-text-slot po-slot-a">
+          <h1 class="text-3xl md:text-4xl font-black leading-tight" style="text-shadow: 0 2px 16px rgba(0, 0, 0, 0.4)">Suku Dinas PPKUKM</h1>
+        </div>
+        <div class="po-text-slot po-slot-b">
+          <h1 class="text-3xl md:text-4xl font-black leading-tight" style="text-shadow: 0 2px 16px rgba(0, 0, 0, 0.4)">Andronico Parulian, S.E, M.SC</h1>
+        </div>
+      </div>
+
+      <!-- Animated subtitle -->
+      <div class="relative" style="height: 76px">
+        <div class="po-text-slot po-sub-slot-a items-start">
+          <p class="text-white text-sm md:text-base leading-relaxed max-w-md" style="text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3)">
+            Kedudukan, Tugas, dan Fungsi Suku Dinas Perindustrian, Perdagangan, Koperasi, Usaha Kecil dan Menengah Kota Administrasi Jakarta Barat.
+          </p>
+        </div>
+        <div class="po-text-slot po-sub-slot-b items-start">
+          <span class="inline-flex items-center gap-2 bg-white/15 border border-white/30 rounded-full px-4 py-2 text-sm font-semibold" style="text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2)">
+            <span class="w-2 h-2 rounded-full bg-blue-300 animate-pulse flex-shrink-0"></span>
+            Kepala Suku Dinas PPKUKM
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: circular photo -->
+    <div class="flex-shrink-0 flex items-center justify-center po-photo-in">
+      <div class="relative po-ring-pulse">
+        <!-- Outer glow -->
+        <div class="absolute -inset-3 rounded-full bg-gradient-to-br from-blue-300/50 to-indigo-400/30 blur-md"></div>
+        <!-- Border ring -->
+        <div class="relative rounded-full p-[3px] bg-gradient-to-br from-blue-300 via-white/40 to-indigo-400 shadow-2xl shadow-blue-900/50" style="width: 260px; height: 260px">
+          <!-- Inner circle -->
+          <div class="w-full h-full rounded-full overflow-hidden bg-blue-800 po-photo-float">
+            <img src="{{ url_for('static', filename='uploads/andronico_parulian.jpg') }}" alt="Andronico Parulian, S.E, M.SC" class="w-full h-full object-cover object-top" onerror="this.style.display = 'none'" />
+          </div>
+        </div>
+        <!-- Name tag -->
+        <div
+          class="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white/15 border border-white/30 backdrop-blur-sm rounded-full px-4 py-1 text-xs font-bold text-white shadow-lg"
+          style="text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3)"
+        >
+          Andronico Parulian, S.E, M.SC
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab Navigation -->
+<div x-data="{ tab: 'kedudukan' }" class="mb-12">
+  <div class="flex gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl p-1.5 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm mb-8 max-w-2xl mx-auto" data-scroll-reveal>
+    <button
+      @click="tab = 'kedudukan'"
+      :class="tab === 'kedudukan' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20' : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20'"
+      class="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200"
+    >
+      <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+        />
+      </svg>
+      Kedudukan
+    </button>
+    <button
+      @click="tab = 'tugas'"
+      :class="tab === 'tugas' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20' : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20'"
+      class="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200"
+    >
+      <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      </svg>
+      Tugas &amp; Fungsi
+    </button>
+    <button
+      @click="tab = 'organisasi'"
+      :class="tab === 'organisasi' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20' : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20'"
+      class="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200"
+    >
+      <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+        />
+      </svg>
+      Susunan Organisasi
+    </button>
+  </div>
+
+  <!-- ===== KEDUDUKAN TAB ===== -->
+  <div x-show="tab === 'kedudukan'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
+    <div class="max-w-4xl mx-auto space-y-6">
+      <!-- Section title -->
+      <div class="flex items-center gap-3 mb-8" data-scroll-reveal>
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/25">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-2xl font-black text-gray-900 dark:text-white">Kedudukan</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Struktur kepemimpinan dan pertanggungjawaban</p>
+        </div>
+      </div>
+
+      <!-- Point 1 -->
+      <div class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 p-8" data-scroll-reveal>
+        <div class="flex items-start gap-5">
+          <div class="flex-shrink-0 w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center font-black text-blue-600 dark:text-blue-400 text-sm border border-blue-200/50 dark:border-blue-800/50">1</div>
+          <div class="flex-1">
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
+              Suku Dinas PPKUKM Kota Administrasi dipimpin oleh <span class="font-semibold text-blue-600 dark:text-blue-400">Kepala Suku Dinas PPKUKM Kota Administrasi</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Point 2 -->
+      <div class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 p-8" data-scroll-reveal>
+        <div class="flex items-start gap-5">
+          <div class="flex-shrink-0 w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center font-black text-blue-600 dark:text-blue-400 text-sm border border-blue-200/50 dark:border-blue-800/50">2</div>
+          <div class="flex-1">
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
+              Kepala Suku Dinas PPKUKM Kota Administrasi berkedudukan di bawah dan bertanggung jawab kepada <span class="font-semibold text-blue-600 dark:text-blue-400">Kepala Dinas PPKUKM</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Point 3 -->
+      <div class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 p-8" data-scroll-reveal>
+        <div class="flex items-start gap-5">
+          <div class="flex-shrink-0 w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center font-black text-blue-600 dark:text-blue-400 text-sm border border-blue-200/50 dark:border-blue-800/50">3</div>
+          <div class="flex-1">
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
+              Dalam melaksanakan tugas, Suku Dinas PPKUKM Kota Administrasi berkoordinasi dengan <span class="font-semibold text-blue-600 dark:text-blue-400">Walikota</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TUGAS & FUNGSI TAB ===== -->
+  <div x-show="tab === 'tugas'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
+    <div class="max-w-4xl mx-auto space-y-8">
+      <!-- B.1 — Tugas -->
+      <div data-scroll-reveal>
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+              />
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-2xl font-black text-gray-900 dark:text-white">Tugas &amp; Fungsi</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Tugas pokok dan fungsi pelaksanaan</p>
+          </div>
+        </div>
+
+        <!-- Tugas Pokok -->
+        <div class="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-3xl p-8 text-white shadow-xl shadow-indigo-500/20 mb-6">
+          <div class="flex items-start gap-4">
+            <div>
+              <h3 class="font-bold text-lg mb-3">Tugas Pokok</h3>
+              <p class="text-indigo-100 leading-relaxed">
+                Suku Dinas PPKUKM Kota Administrasi mempunyai tugas
+                <span class="font-semibold text-white">membantu Dinas PPKUKM menyelenggarakan sebagian urusan pemerintahan bidang perindustrian, perdagangan, koperasi, usaha kecil dan menengah</span> pada wilayah Kota Administrasi.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fungsi Header -->
+        <div class="flex items-center gap-3 mb-5">
+          <div class="flex-shrink-0 w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 text-sm border border-indigo-200/50 dark:border-indigo-800/50">
+            12
+          </div>
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-white">Fungsi Pelaksanaan</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400">12 fungsi yang diselenggarakan</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fungsi Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- a -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center font-black text-blue-600 dark:text-blue-400 text-xs border border-blue-200/50 dark:border-blue-800/50">a</div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Pelaksanaan pembinaan, pengembangan dan pengendalian <span class="font-medium text-gray-900 dark:text-white">perindustrian, perdagangan dan kewirausahaan</span> pada wilayah Kota Administrasi sesuai kewenangan.
+            </p>
+          </div>
+        </div>
+
+        <!-- b -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 text-xs border border-indigo-200/50 dark:border-indigo-800/50">
+              b
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Pelaksanaan pembinaan, pemberdayaan dan pengembangan <span class="font-medium text-gray-900 dark:text-white">koperasi, usaha kecil dan menengah</span> pada wilayah Kota Administrasi sesuai kewenangan.
+            </p>
+          </div>
+        </div>
+
+        <!-- c -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div
+              class="flex-shrink-0 w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center font-black text-emerald-600 dark:text-emerald-400 text-xs border border-emerald-200/50 dark:border-emerald-800/50"
+            >
+              c
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Pelaksanaan pengelolaan <span class="font-medium text-gray-900 dark:text-white">tempat kumpul kreatif</span> di wilayah Kota Administrasi.</p>
+          </div>
+        </div>
+
+        <!-- d -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center font-black text-amber-600 dark:text-amber-400 text-xs border border-amber-200/50 dark:border-amber-800/50">d</div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Pelaksanaan pengendalian <span class="font-medium text-gray-900 dark:text-white">ketersediaan barang kebutuhan pokok dan barang penting</span> pada wilayah Kota Administrasi.
+            </p>
+          </div>
+        </div>
+
+        <!-- e -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center font-black text-blue-600 dark:text-blue-400 text-xs border border-blue-200/50 dark:border-blue-800/50">e</div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Pelaksanaan <span class="font-medium text-gray-900 dark:text-white">pemantauan harga dan informasi ketersediaan stok</span> barang kebutuhan pokok dan barang penting pada wilayah Kota Administrasi.
+            </p>
+          </div>
+        </div>
+
+        <!-- f -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-orange-100 dark:bg-orange-900/40 flex items-center justify-center font-black text-orange-600 dark:text-orange-400 text-xs border border-orange-200/50 dark:border-orange-800/50">
+              f
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Pelaksanaan <span class="font-medium text-gray-900 dark:text-white">operasi pasar</span> dalam rangka stabilisasi harga pangan pokok pada wilayah Kota Administrasi.
+            </p>
+          </div>
+        </div>
+
+        <!-- g -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center font-black text-indigo-600 dark:text-indigo-400 text-xs border border-indigo-200/50 dark:border-indigo-800/50">
+              g
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Pelaksanaan penerbitan <span class="font-medium text-gray-900 dark:text-white">surat keterangan asal</span>.</p>
+          </div>
+        </div>
+
+        <!-- h -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div
+              class="flex-shrink-0 w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center font-black text-emerald-600 dark:text-emerald-400 text-xs border border-emerald-200/50 dark:border-emerald-800/50"
+            >
+              h
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Pelaksanaan <span class="font-medium text-gray-900 dark:text-white">pemeriksaan dan pengawasan koperasi</span> pada wilayah Kota Administrasi.</p>
+          </div>
+        </div>
+
+        <!-- i -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center font-black text-blue-600 dark:text-blue-400 text-xs border border-blue-200/50 dark:border-blue-800/50">i</div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Pelaksanaan <span class="font-medium text-gray-900 dark:text-white">pemantauan perindustrian, perdagangan, koperasi, usaha mikro, usaha kecil dan menengah</span> pada wilayah Kota Administrasi.
+            </p>
+          </div>
+        </div>
+
+        <!-- j -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center font-black text-purple-600 dark:text-purple-400 text-xs border border-purple-200/50 dark:border-purple-800/50">
+              j
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Pemberian <span class="font-medium text-gray-900 dark:text-white">rekomendasi nonteknis dan/atau verifikasi</span> perindustrian, perdagangan, koperasi, usaha mikro, usaha kecil dan menengah pada wilayah Kota Administrasi.
+            </p>
+          </div>
+        </div>
+
+        <!-- k -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center font-black text-amber-600 dark:text-amber-400 text-xs border border-amber-200/50 dark:border-amber-800/50">k</div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Pelaksanaan <span class="font-medium text-gray-900 dark:text-white">kesekretariatan</span> Suku Dinas PPKUKM Kota Administrasi.</p>
+          </div>
+        </div>
+
+        <!-- l -->
+        <div
+          class="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all duration-300 p-6"
+          data-scroll-reveal
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-xl bg-teal-100 dark:bg-teal-900/40 flex items-center justify-center font-black text-teal-600 dark:text-teal-400 text-xs border border-teal-200/50 dark:border-teal-800/50">l</div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Pelaksanaan <span class="font-medium text-gray-900 dark:text-white">kemitraan</span> di bidang perindustrian, perdagangan, koperasi, usaha kecil dan menengah pada wilayah kota administrasi.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary stat bar -->
+      <div class="grid grid-cols-3 gap-4 mt-4" data-scroll-reveal>
+        <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-5 text-center">
+          <p class="text-3xl font-black text-blue-600 dark:text-blue-400">12</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">Fungsi Utama</p>
+        </div>
+        <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-5 text-center">
+          <p class="text-3xl font-black text-indigo-600 dark:text-indigo-400">4</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">Sektor Binaan</p>
+        </div>
+        <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md p-5 text-center">
+          <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400">1</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">Wilayah Kota</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SUSUNAN ORGANISASI TAB ===== -->
+  <div x-show="tab === 'organisasi'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
+    <div class="max-w-4xl mx-auto space-y-8">
+      <!-- Header -->
+      <div class="flex items-center gap-3" data-scroll-reveal>
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/25">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="4"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-2xl font-black text-gray-900 dark:text-white">Susunan Organisasi</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Struktur unit kerja Suku Dinas PPKUKM Kota Administrasi</p>
+        </div>
+      </div>
+
+      <!-- Overview poin 1 -->
+      <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-100 dark:border-gray-700 shadow-lg p-8" data-scroll-reveal>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">Suku Dinas PPKUKM Kota Administrasi <span class="font-semibold text-blue-600 dark:text-blue-400">terdiri atas</span> 4 (empat) unit kerja:</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/20 rounded-2xl px-4 py-3">
+            <span class="w-7 h-7 rounded-lg bg-blue-600 text-white text-xs font-black flex items-center justify-center flex-shrink-0">a</span>
+            <span class="text-sm font-medium text-gray-900 dark:text-white">Subbagian Tata Usaha</span>
+          </div>
+          <div class="flex items-center gap-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl px-4 py-3">
+            <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white text-xs font-black flex items-center justify-center flex-shrink-0">b</span>
+            <span class="text-sm font-medium text-gray-900 dark:text-white">Seksi Perindustrian</span>
+          </div>
+          <div class="flex items-center gap-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl px-4 py-3">
+            <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white text-xs font-black flex items-center justify-center flex-shrink-0">c</span>
+            <span class="text-sm font-medium text-gray-900 dark:text-white">Seksi Perdagangan</span>
+          </div>
+          <div class="flex items-center gap-3 bg-amber-50 dark:bg-amber-900/20 rounded-2xl px-4 py-3">
+            <span class="w-7 h-7 rounded-lg bg-amber-600 text-white text-xs font-black flex items-center justify-center flex-shrink-0">d</span>
+            <span class="text-sm font-medium text-gray-900 dark:text-white">Seksi Koperasi, Usaha Kecil dan Menengah</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unit cards — each links to its own page -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Subbagian Tata Usaha -->
+        <a
+          href="{{ url_for('subbagian_tata_usaha') }}"
+          class="group block bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+          data-scroll-reveal
+        >
+          <div class="h-3 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+          <div class="p-7">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600 transition-colors duration-300">
+                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div class="flex-1">
+                <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Unit Kerja</span>
+                <h3 class="text-base font-black text-gray-900 dark:text-white mt-0.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Subbagian Tata Usaha</h3>
+              </div>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5">Mengelola administrasi, kepegawaian, keuangan, perencanaan, dan pelaporan kinerja Suku Dinas PPKUKM.</p>
+            <div class="flex items-center justify-between">
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-bold rounded-full">15 Tugas</span>
+              <span class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 group-hover:gap-2 transition-all duration-200">
+                Lihat Detail
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Seksi Perindustrian -->
+        <a
+          href="{{ url_for('seksi_perindustrian') }}"
+          class="group block bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+          data-scroll-reveal
+        >
+          <div class="h-3 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
+          <div class="p-7">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-600 transition-colors duration-300">
+                <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                  />
+                </svg>
+              </div>
+              <div class="flex-1">
+                <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Unit Kerja</span>
+                <h3 class="text-base font-black text-gray-900 dark:text-white mt-0.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Seksi Perindustrian</h3>
+              </div>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5">Menyelenggarakan pembinaan, pengembangan, dan pengendalian kegiatan perindustrian dan kewirausahaan.</p>
+            <div class="flex items-center justify-between">
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs font-bold rounded-full">Perindustrian</span>
+              <span class="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400 group-hover:gap-2 transition-all duration-200">
+                Lihat Detail
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Seksi Perdagangan -->
+        <a
+          href="{{ url_for('seksi_perdagangan') }}"
+          class="group block bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+          data-scroll-reveal
+        >
+          <div class="h-3 bg-gradient-to-r from-emerald-500 to-teal-600"></div>
+          <div class="p-7">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-600 transition-colors duration-300">
+                <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+              </div>
+              <div class="flex-1">
+                <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Unit Kerja</span>
+                <h3 class="text-base font-black text-gray-900 dark:text-white mt-0.5 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">Seksi Perdagangan</h3>
+              </div>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5">Menyelenggarakan pembinaan, pengendalian, dan pemantauan kegiatan perdagangan serta stabilisasi harga pangan.</p>
+            <div class="flex items-center justify-between">
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 text-xs font-bold rounded-full">Perdagangan</span>
+              <span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:gap-2 transition-all duration-200">
+                Lihat Detail
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Seksi Koperasi UKM -->
+        <a
+          href="{{ url_for('seksi_koperasi_ukm') }}"
+          class="group block bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+          data-scroll-reveal
+        >
+          <div class="h-3 bg-gradient-to-r from-amber-500 to-orange-500"></div>
+          <div class="p-7">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-600 transition-colors duration-300">
+                <svg class="w-6 h-6 text-amber-600 dark:text-amber-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+              </div>
+              <div class="flex-1">
+                <span class="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Unit Kerja</span>
+                <h3 class="text-base font-black text-gray-900 dark:text-white mt-0.5 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">Seksi Koperasi, UKM</h3>
+              </div>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-5">Menyelenggarakan pembinaan, pemberdayaan, pengembangan, dan pengawasan koperasi, usaha kecil dan menengah.</p>
+            <div class="flex items-center justify-between">
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs font-bold rounded-full">Koperasi &amp; UKM</span>
+              <span class="inline-flex items-center gap-1 text-xs font-semibold text-amber-600 dark:text-amber-400 group-hover:gap-2 transition-all duration-200">
+                Lihat Detail
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+              </span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="bg-gradient-to-br from-blue-600 via-indigo-700 to-blue-900 rounded-3xl p-10 text-white text-center shadow-2xl shadow-blue-900/30 mt-4 mb-4" data-scroll-reveal>
+  <h3 class="text-2xl font-black mb-3">Butuh Layanan Kami?</h3>
+  <p class="text-blue-100 text-sm mb-6 max-w-md mx-auto">Kami siap membantu pelaku usaha kecil dan menengah di wilayah Jakarta Barat.</p>
+  <div class="flex flex-col sm:flex-row gap-3 justify-center">
+    <a href="{{ url_for('index') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-blue-700 font-semibold rounded-2xl hover:bg-blue-50 shadow-lg transition-all duration-200 text-sm hover:-translate-y-0.5">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+      Lihat Layanan
+    </a>
+    <a
+      href="{{ url_for('index') }}"
+      class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold rounded-2xl hover:bg-white/20 transition-all duration-200 text-sm"
+    >
+      Kembali ke Beranda
+    </a>
+  </div>
+</div>
+
+{% endblock %}

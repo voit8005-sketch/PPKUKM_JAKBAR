@@ -1,0 +1,67 @@
+{% extends "base.html" %} {% block title %}Buat Kalender Kegiatan - Sudin PPKUKM{% endblock %} {% block content %}
+
+<div class="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+  <div class="mb-8">
+    <p class="text-xs uppercase tracking-[0.32em] text-emerald-600 font-bold mb-3">Kalender Kegiatan</p>
+    <h1 class="text-3xl md:text-4xl font-black text-gray-900 dark:text-white">Buat Acara Mendatang</h1>
+    <p class="mt-4 text-gray-600 dark:text-gray-400 max-w-2xl">Gunakan formulir ini untuk mengajukan acara baru. Acara akan masuk ke antrian review admin sebelum dipublikasi di kalender.</p>
+  </div>
+
+  <form method="POST" enctype="multipart/form-data" class="space-y-8">
+    <div class="bg-white/90 dark:bg-gray-900/95 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-xl p-10">
+      <div class="grid gap-6 lg:grid-cols-2">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Judul Acara <span class="text-red-500">*</span></label>
+          <input name="title" type="text" required class="w-full rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 px-5 py-4 focus:border-emerald-500 focus:ring-emerald-200 focus:ring-4 outline-none text-gray-900 dark:text-white" placeholder="Semarak Pasar UMKM Jakarta Barat" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Lokasi</label>
+          <input name="location" type="text" class="w-full rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 px-5 py-4 focus:border-emerald-500 focus:ring-emerald-200 focus:ring-4 outline-none text-gray-900 dark:text-white" placeholder="Lapangan RW 05, Kecamatan Kembangan" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Tanggal Mulai Pendaftaran</label>
+          <input name="registration_start_date" type="date" class="w-full rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 px-5 py-4 focus:border-emerald-500 focus:ring-emerald-200 focus:ring-4 outline-none text-gray-900 dark:text-white" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Tanggal Selesai Pendaftaran</label>
+          <input name="registration_end_date" type="date" class="w-full rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 px-5 py-4 focus:border-emerald-500 focus:ring-emerald-200 focus:ring-4 outline-none text-gray-900 dark:text-white" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Tanggal Mulai Pelaksanaan</label>
+          <input name="start_date" type="date" class="w-full rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 px-5 py-4 focus:border-emerald-500 focus:ring-emerald-200 focus:ring-4 outline-none text-gray-900 dark:text-white" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Tanggal Selesai Pelaksanaan</label>
+          <input name="end_date" type="date" class="w-full rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 px-5 py-4 focus:border-emerald-500 focus:ring-emerald-200 focus:ring-4 outline-none text-gray-900 dark:text-white" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Jumlah Peserta</label>
+          <input name="participant_count" type="number" min="0" class="w-full rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 px-5 py-4 focus:border-emerald-500 focus:ring-emerald-200 focus:ring-4 outline-none text-gray-900 dark:text-white" placeholder="50" />
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Deskripsi Acara</label>
+        <textarea name="content" rows="8" class="w-full rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 px-5 py-4 focus:border-emerald-500 focus:ring-emerald-200 focus:ring-4 outline-none text-gray-900 dark:text-white" placeholder="Tuliskan detail kegiatan, tujuan, dan informasi penting lainnya."></textarea>
+      </div>
+
+      <div class="mt-8 grid gap-6 lg:grid-cols-2">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Unggah Foto Kegiatan (opsional)</label>
+          <input name="photos" type="file" accept="image/png,image/jpeg,image/gif,image/webp" multiple class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-100 file:text-emerald-700 hover:file:bg-emerald-200" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Unggah Video Kegiatan (opsional)</label>
+          <input name="videos" type="file" accept="video/mp4,video/webm,video/quicktime" multiple class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-100 file:text-emerald-700 hover:file:bg-emerald-200" />
+        </div>
+      </div>
+
+      <div class="mt-10 flex flex-col sm:flex-row gap-4">
+        <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-3xl bg-emerald-600 text-white px-8 py-4 font-bold text-sm shadow-lg shadow-emerald-500/20 hover:bg-emerald-700 transition-all duration-200">Simpan & Kirim untuk Review</button>
+        <a href="{{ url_for('calendar') }}" class="inline-flex items-center justify-center gap-2 rounded-3xl border border-gray-200 bg-white text-gray-700 px-8 py-4 font-semibold text-sm hover:bg-gray-50 transition-all duration-200">Batal</a>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

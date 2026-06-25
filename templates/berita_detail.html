@@ -1,0 +1,288 @@
+{% extends "base.html" %} {% block title %}{{ item.title }} - Sudin PPKUKM{% endblock %} {% block content %}
+<style>
+  .hero-section {
+    position: relative;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(120, 40, 5, 0.97) 0%, rgba(146, 64, 14, 0.9) 40%, rgba(180, 83, 9, 0.55) 65%, rgba(194, 65, 12, 0.15) 100%);
+    z-index: 1;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 2.5rem;
+    max-width: 600px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 9999px;
+    padding: 8px 16px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .hero-title:hover {
+    font-weight: 950 !important;
+  }
+  .hero-title.font-black {
+    font-weight: 950 !important;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.95);
+  }
+  .hero-meta span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 3rem 0;
+  }
+  .stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-8px);
+  }
+  .stat-number {
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .content-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="max-w-6xl mx-auto px-4 py-12">
+  <div class="hero-section mb-12">
+    {% if item.photos %}
+    <div class="hero-bg" style="background-image:url('{{ item.photos[0].file_url }}')"></div>
+    {% elif item.image_url %}
+    <div class="hero-bg" style="background-image:url('{{ item.image_url }}')"></div>
+    {% endif %}
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="breadcrumb">
+        <a href="{{ url_for('index') }}" class="hover:text-white">Beranda</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        Berita Detail
+      </div>
+      {% if item.category %}
+      <div class="hero-badge">
+        {% if item.category == 'event' %}📅{% elif item.category == 'pelatihan' %}🎓{% elif item.category == 'promosi' %}🚀{% elif item.category == 'ukm' %}🏪{% endif %} {{ item.category.replace('_', ' ').title() }}
+      </div>
+      {% endif %}
+      <h1 class="hero-title" onclick="this.classList.toggle('font-black')" title="Klik tebalkan">{{ item.title }}</h1>
+      <div class="hero-meta">
+        {% if item.start_date %}
+        <span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          {{ item.start_date.strftime('%d %B %Y') }}{% if item.end_date %} - {{ item.end_date.strftime('%d %B %Y') }}{% endif %}
+        </span>
+        {% endif %} {% if item.location %}
+        <span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          {{ item.location }}
+        </span>
+        {% endif %}
+        <span>{{ item.author.username if item.author else 'Admin' }} • {{ item.publish_date.strftime('%d %B %Y') }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    {% if item.participant_count %}
+    <div class="stat-card">
+      <span class="stat-number">{{ item.participant_count }}</span>
+      <p class="text-gray-600 font-semibold">Peserta</p>
+    </div>
+    {% endif %}
+    <div class="stat-card">
+      <span class="stat-number">{{ item.photos|length }}</span>
+      <p class="text-gray-600 font-semibold">Foto</p>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">{{ item.videos|length }}</span>
+      <p class="text-gray-600 font-semibold">Video</p>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">{{ item.publish_date.strftime('%#d') if item.publish_date else '0' }}</span>
+      <p class="text-gray-600 font-semibold">Hari Lalu</p>
+    </div>
+  </div>
+
+  <div class="content-section">{{ item.content|replace('\r\n', '\n')|replace('\n', '<br />')|safe }}</div>
+
+  <!-- Foto Gallery -->
+  {% if item.photos %}
+  <div class="my-12">
+    <h2 class="text-3xl font-black mb-8 text-gray-900">Dokumentasi Foto</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for photo in item.photos %}
+      <div class="group relative rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300 cursor-pointer" onclick="openPhotoModal('{{ photo.file_url }}')">
+        <img src="{{ photo.file_url }}" alt="{{ photo.caption or 'Foto berita' }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+          <div class="text-white">
+            {% if photo.caption %}
+            <p class="font-semibold text-sm">{{ photo.caption }}</p>
+            {% endif %}
+            <p class="text-xs text-white/70">{{ photo.created_at.strftime('%d %B %Y') }}</p>
+          </div>
+        </div>
+        <div class="absolute top-4 right-4 bg-white/90 rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+          </svg>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Photo Modal -->
+  <div id="photoModal" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onclick="closePhotoModal(event)">
+    <button onclick="closePhotoModal()" class="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors z-10">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+    <img id="modalImage" src="" alt="" class="max-w-4xl max-h-[80vh] object-contain rounded-3xl shadow-2xl" />
+  </div>
+
+  <script>
+    function openPhotoModal(url) {
+      document.getElementById("photoModal").classList.remove("hidden");
+      document.getElementById("modalImage").src = url;
+    }
+    function closePhotoModal(event) {
+      if (event && event.target !== document.getElementById("photoModal")) return;
+      document.getElementById("photoModal").classList.add("hidden");
+    }
+  </script>
+  {% endif %}
+
+  <!-- Video Gallery -->
+  {% if item.videos %}
+  <div class="my-12">
+    <h2 class="text-3xl font-black mb-8 text-gray-900">Dokumentasi Video</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for video in item.videos %}
+      <div class="group relative rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
+        <video src="{{ video.file_url }}" class="w-full h-64 object-cover bg-gray-900" controls></video>
+        {% if video.caption %}
+        <div class="bg-gray-50 p-4">
+          <p class="font-semibold text-sm text-gray-900">{{ video.caption }}</p>
+          <p class="text-xs text-gray-500">{{ video.created_at.strftime('%d %B %Y') }}</p>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Instagram Section -->
+  <div class="bg-gradient-to-br from-purple-900 via-pink-700 to-rose-500 rounded-3xl p-10 shadow-2xl text-white my-12">
+    <div class="space-y-5 text-center">
+      <div class="inline-flex items-center justify-center gap-3 rounded-3xl bg-white/10 px-6 py-4 mx-auto text-sm font-semibold text-white/90">
+        <svg class="w-6 h-6 text-pink-200" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
+          />
+        </svg>
+        Instagram Sudin PPKUKM
+      </div>
+      <p class="max-w-2xl mx-auto text-sm text-white/80">Ikuti Instagram resmi Sudin PPKUKM untuk mendapatkan update terbaru tentang kegiatan, pelatihan, bazar, dan informasi UKM lainnya.</p>
+      <a href="https://www.instagram.com/sudinppkukmjakbar/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-2xl bg-white text-pink-700 px-5 py-3 text-sm font-bold hover:bg-white/90 transition">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
+          />
+        </svg>
+        Lihat Instagram @sudinppkukmjakbar
+      </a>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <a
+      href="{{ url_for('index') }}"
+      class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-orange-500/50 hover:-translate-y-1 transition-all text-lg"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Kembali Beranda
+    </a>
+  </div>
+</div>
+
+{% endblock %}

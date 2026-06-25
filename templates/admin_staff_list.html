@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Kelola Staff - Admin PPKUKM{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-8">
+  <div>
+    <h1 class="text-2xl font-black text-gray-900 dark:text-white mb-1">Kelola Akun Staff</h1>
+    <p class="text-gray-500 dark:text-gray-400 text-sm">Tambah, nonaktifkan, atau reset password staff kantor.</p>
+  </div>
+  <a href="{{ url_for('admin_staff_new') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/25">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+    Tambah Staff
+  </a>
+</div>
+
+<div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+  {% if staff_users %}
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 dark:bg-gray-900/40 text-left text-xs font-black uppercase tracking-wider text-gray-500 dark:text-gray-400">
+      <tr>
+        <th class="px-6 py-3">Username</th>
+        <th class="px-6 py-3">Email</th>
+        <th class="px-6 py-3">NIP</th>
+        <th class="px-6 py-3">Status</th>
+        <th class="px-6 py-3">Aksi</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-50 dark:divide-gray-700/50">
+      {% for u in staff_users %}
+      <tr>
+        <td class="px-6 py-3 font-semibold text-gray-900 dark:text-white">{{ u.username }}</td>
+        <td class="px-6 py-3 text-gray-600 dark:text-gray-400">{{ u.email }}</td>
+        <td class="px-6 py-3 text-gray-600 dark:text-gray-400">{{ u.nip or '-' }}</td>
+        <td class="px-6 py-3">
+          {% if u.is_active_account %}
+            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Aktif</span>
+          {% else %}
+            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400">Nonaktif</span>
+          {% endif %}
+          {% if u.must_change_password %}
+            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 ml-1">Belum ganti pw</span>
+          {% endif %}
+        </td>
+        <td class="px-6 py-3">
+          <div class="flex flex-wrap gap-2">
+            <form method="POST" action="{{ url_for('admin_staff_reset_password', user_id=u.id) }}" onsubmit="return confirm('Reset password akun ini?')">
+              <button type="submit" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100">Reset Pw</button>
+            </form>
+            {% if u.is_active_account %}
+            <form method="POST" action="{{ url_for('admin_staff_disable', user_id=u.id) }}" onsubmit="return confirm('Nonaktifkan akun ini?')">
+              <button type="submit" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-100">Nonaktifkan</button>
+            </form>
+            {% else %}
+            <form method="POST" action="{{ url_for('admin_staff_enable', user_id=u.id) }}">
+              <button type="submit" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100">Aktifkan</button>
+            </form>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="text-center py-16 text-sm text-gray-500 dark:text-gray-400">
+    Belum ada akun staff. <a href="{{ url_for('admin_staff_new') }}" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">Tambah staff pertama</a>.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

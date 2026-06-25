@@ -1,0 +1,125 @@
+{% extends "base.html" %} {% block title %}Kalender Kegiatan - Sudin PPKUKM Jakarta Barat{% endblock %} {% block content %}
+
+<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+  <div class="flex flex-col lg:flex-row justify-between gap-6 mb-10">
+    <div>
+      <p class="text-xs uppercase tracking-[0.32em] text-emerald-600 font-bold mb-3">Kalender Kegiatan</p>
+      <h1 class="text-3xl md:text-4xl font-black text-gray-900 dark:text-white">Acara & Kegiatan Mendatang</h1>
+      <p class="mt-4 text-gray-600 dark:text-gray-400 max-w-2xl">Lihat jadwal kegiatan yang sudah dipublikasi oleh tim Sudin PPKUKM. Jika Anda staf atau admin, tambahkan acara baru untuk tampil di kalender mendatang.</p>
+    </div>
+    {% if current_user.is_authenticated and current_user.role in ['staff', 'admin'] %}
+    <div class="flex items-center gap-3">
+      <a href="{{ url_for('calendar_new') }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-emerald-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:bg-emerald-700 transition-all duration-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Tambah Acara Baru
+      </a>
+    </div>
+    {% endif %}
+  </div>
+
+  <form method="get" class="grid gap-4 sm:grid-cols-3 items-end mb-8">
+    <div>
+      <label for="month" class="block text-sm font-semibold text-gray-700 dark:text-gray-200">Bulan</label>
+      <select id="month" name="month" class="mt-2 block w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-gray-900 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 dark:border-gray-800 dark:bg-gray-900 dark:text-white">
+        <option value="">Semua Bulan</option>
+        {% for name in month_names %}
+        <option value="{{ loop.index }}" {% if selected_month == loop.index %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="year" class="block text-sm font-semibold text-gray-700 dark:text-gray-200">Tahun</label>
+      <select id="year" name="year" class="mt-2 block w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-gray-900 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 dark:border-gray-800 dark:bg-gray-900 dark:text-white">
+        <option value="">Tahun Saat Ini</option>
+        {% for y in years %}
+        <option value="{{ y }}" {% if selected_year == y %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-700 transition-all duration-200">Tampilkan</button>
+  </form>
+
+  <div class="grid gap-6">
+    {% if events %}
+    {% for event in events %}
+    <article class="bg-white/90 dark:bg-gray-900/95 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-xl overflow-hidden transition hover:-translate-y-1 hover:shadow-2xl duration-300">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-0">
+        <div class="lg:col-span-1 relative overflow-hidden h-72 lg:h-auto">
+          {% if event.image_url or event.photos %}
+          <img
+            src="{% if event.image_url %}{{ event.image_url }}{% else %}{{ event.photos[0].file_url }}{% endif %}"
+            alt="Foto acara {{ event.title }}"
+            class="object-cover w-full h-full"
+          />
+          {% else %}
+          <div class="flex h-full items-center justify-center bg-gradient-to-br from-emerald-600 to-slate-900 p-10 text-white">
+            <div class="text-center">
+              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/15 text-2xl">
+                📅
+              </div>
+              <p class="text-xs uppercase tracking-[0.32em] text-emerald-200 font-semibold">Kalender Acara</p>
+              <h2 class="mt-4 text-xl font-black">{{ event.title }}</h2>
+              <p class="mt-3 text-sm text-emerald-100">{{ event.start_date.strftime('%d %b %Y') if event.start_date else 'Tanggal belum tersedia' }}</p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="lg:col-span-2 p-8 space-y-6">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="rounded-3xl bg-emerald-50 dark:bg-emerald-900/20 p-5">
+              <p class="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-700 dark:text-emerald-200">Pendaftaran</p>
+              <p class="mt-3 text-sm text-gray-700 dark:text-gray-300">Mulai: <span class="font-semibold text-gray-900 dark:text-white">{{ event.registration_start_date.strftime('%d %b %Y') if event.registration_start_date else '-' }}</span></p>
+              <p class="text-sm text-gray-700 dark:text-gray-300">Selesai: <span class="font-semibold text-gray-900 dark:text-white">{{ event.registration_end_date.strftime('%d %b %Y') if event.registration_end_date else '-' }}</span></p>
+            </div>
+            <div class="rounded-3xl bg-slate-50 dark:bg-gray-900/80 p-5">
+              <p class="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500 dark:text-slate-300">Pelaksanaan</p>
+              <p class="mt-3 text-sm text-gray-700 dark:text-gray-300">Mulai: <span class="font-semibold text-gray-900 dark:text-white">{{ event.start_date.strftime('%d %b %Y') if event.start_date else '-' }}</span></p>
+              <p class="text-sm text-gray-700 dark:text-gray-300">Selesai: <span class="font-semibold text-gray-900 dark:text-white">{{ event.end_date.strftime('%d %b %Y') if event.end_date else '-' }}</span></p>
+            </div>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            {% if event.location %}
+            <div class="rounded-3xl bg-white dark:bg-gray-950/90 border border-gray-200 dark:border-gray-800 p-5">
+              <p class="text-xs uppercase tracking-[0.32em] text-gray-500 dark:text-gray-400">Lokasi</p>
+              <p class="mt-3 font-semibold text-gray-900 dark:text-white">{{ event.location }}</p>
+            </div>
+            {% endif %}
+            {% if event.participant_count %}
+            <div class="rounded-3xl bg-white dark:bg-gray-950/90 border border-gray-200 dark:border-gray-800 p-5">
+              <p class="text-xs uppercase tracking-[0.32em] text-gray-500 dark:text-gray-400">Kuota</p>
+              <p class="mt-3 font-semibold text-gray-900 dark:text-white">{{ event.participant_count }} peserta</p>
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="rounded-3xl bg-slate-50 dark:bg-gray-950/90 border border-gray-200 dark:border-gray-800 p-6">
+            <p class="text-xs uppercase tracking-[0.32em] text-slate-500 dark:text-slate-400 mb-3">Penjelasan acara</p>
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{{ event.content or 'Deskripsi acara belum tersedia.' }}</p>
+          </div>
+
+          <div class="flex items-center justify-between gap-3 text-sm text-gray-500 dark:text-gray-400">
+            <div>Diajukan oleh <span class="font-semibold text-gray-900 dark:text-white">{{ event.author.username if event.author else 'Tim' }}</span></div>
+            <a href="{{ url_for('calendar_detail', event_id=event.id) }}" class="font-semibold text-emerald-700 dark:text-emerald-300 hover:underline">Lihat detail</a>
+          </div>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+    {% else %}
+    <div class="rounded-3xl bg-white/90 dark:bg-gray-900/95 border border-gray-200 dark:border-gray-800 p-14 text-center shadow-xl">
+      <p class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Belum ada acara yang dijadwalkan.</p>
+      <p class="text-gray-600 dark:text-gray-400 mb-8">Semua acara baru akan muncul di halaman ini setelah dipublikasi oleh admin.</p>
+      {% if current_user.is_authenticated and current_user.role in ['staff', 'admin'] %}
+      <a href="{{ url_for('calendar_new') }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-emerald-600 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:bg-emerald-700 transition-all duration-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Tambah Acara Sekarang
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

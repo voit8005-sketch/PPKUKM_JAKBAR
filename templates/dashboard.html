@@ -1,0 +1,245 @@
+{% extends "base.html" %} {% block title %}Dashboard Admin - Sudin PPKUKM{% endblock %} {% block content %}
+
+<!-- Page header -->
+<div class="mb-8" data-scroll-reveal>
+  <div class="flex items-center gap-2 text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2">
+    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+    Panel Admin
+  </div>
+  <h1 class="text-2xl md:text-3xl font-black text-gray-900 dark:text-white mb-1">Dashboard Admin</h1>
+  <p class="text-gray-500 dark:text-gray-400 text-sm">Selamat datang kembali, <span class="font-semibold text-blue-600 dark:text-blue-400">{{ current_user.username }}</span>. Kelola berita, foto, dan video kegiatan di sini.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+  <!-- Left sidebar -->
+  <div class="lg:col-span-1 space-y-5">
+    <!-- Admin card -->
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden" data-scroll-reveal>
+      <div class="h-20 bg-gradient-to-r from-blue-600 to-indigo-700 relative">
+        <div class="absolute inset-0 opacity-20 bg-grid-pattern"></div>
+      </div>
+      <div class="px-6 pb-6">
+        <div class="-mt-8 mb-4">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 border-4 border-white dark:border-gray-800 shadow-lg flex items-center justify-center text-white text-2xl font-black">
+            {{ current_user.username[0].upper() }}
+          </div>
+        </div>
+        <h3 class="font-bold text-gray-900 dark:text-white text-lg leading-tight">{{ current_user.username }}</h3>
+        <p class="text-xs text-gray-400 dark:text-gray-500 truncate mb-3">{{ current_user.email }}</p>
+        <div class="inline-flex items-center gap-1.5 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-bold px-3 py-1.5 rounded-full">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+          {{ current_user.role|upper }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 p-5" data-scroll-reveal>
+      <h4 class="text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Ringkasan</h4>
+      <div class="flex items-baseline gap-2">
+        <span class="text-3xl font-black text-gray-900 dark:text-white">{{ news|length }}</span>
+        <span class="text-xs text-gray-500 dark:text-gray-400">berita dipublikasi</span>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 p-5 space-y-2" data-scroll-reveal>
+      <h4 class="text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Aksi Cepat</h4>
+      <a
+        href="{{ url_for('add_news') }}"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 hover:from-blue-100 hover:to-indigo-100 text-blue-700 dark:text-blue-300 transition-colors text-sm font-semibold border border-blue-200/50 dark:border-blue-800/50"
+      >
+        <div class="w-8 h-8 rounded-lg bg-blue-200 dark:bg-blue-800/50 flex items-center justify-center">
+          <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+        </div>
+        Tambah Berita
+      </a>
+      <a
+        href="{{ url_for('admin_reviews') }}"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-amber-50 dark:hover:bg-amber-900/20 text-gray-700 dark:text-gray-300 hover:text-amber-700 dark:hover:text-amber-400 transition-colors text-sm font-medium"
+      >
+        <div class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+          <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            />
+          </svg>
+        </div>
+        <span class="flex-1">Review Berita</span>
+        {% if pending_count and pending_count > 0 %}
+        <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500 text-white">{{ pending_count }}</span>
+        {% endif %}
+      </a>
+      <a
+        href="{{ url_for('admin_calendar_reviews') }}"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-gray-700 dark:text-gray-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors text-sm font-medium"
+      >
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+          <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <span class="flex-1">Review Kalender</span>
+        {% if calendar_pending_count and calendar_pending_count > 0 %}
+        <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500 text-white">{{ calendar_pending_count }}</span>
+        {% endif %}
+      </a>
+      <a
+        href="{{ url_for('calendar_new') }}"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-gray-700 dark:text-gray-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors text-sm font-medium"
+      >
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+          <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        Buat Kalender Kegiatan
+      </a>
+      <a
+        href="{{ url_for('admin_staff_list') }}"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-gray-700 dark:text-gray-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors text-sm font-medium"
+      >
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+          <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+          </svg>
+        </div>
+        Kelola Staff
+      </a>
+      <a
+        href="{{ url_for('index') }}"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors text-sm font-medium"
+      >
+        <div class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+          <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+          </svg>
+        </div>
+        Lihat Beranda
+      </a>
+    </div>
+  </div>
+
+  <!-- Main content area -->
+  <div class="lg:col-span-3">
+    <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden" data-scroll-reveal>
+      <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100 dark:border-gray-700">
+        <h2 class="font-black text-gray-900 dark:text-white text-lg">Daftar Berita</h2>
+        <a
+          href="{{ url_for('add_news') }}"
+          class="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-semibold rounded-xl hover:from-blue-700 hover:to-indigo-700 shadow-md shadow-blue-500/20 transition-all"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+          Tambah Berita
+        </a>
+      </div>
+
+      {% if news %}
+      <div class="divide-y divide-gray-50 dark:divide-gray-700/50">
+        {% for item in news %}
+        <div class="flex gap-5 px-8 py-5 hover:bg-gray-50/80 dark:hover:bg-gray-700/30 transition-colors group">
+          <!-- Thumbnail / icon -->
+          <div
+            class="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40 flex items-center justify-center border border-blue-200/50 dark:border-blue-800/50"
+          >
+            {% if item.image_url %}
+            <img src="{{ item.image_url }}" alt="" class="w-full h-full object-cover" />
+            {% else %}
+            <svg class="w-7 h-7 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            </svg>
+            {% endif %}
+          </div>
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <h4 class="font-bold text-gray-900 dark:text-white text-base mb-1 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{{ item.title }}</h4>
+            <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-2 leading-relaxed">{{ item.content|truncate(120) }}</p>
+            <div class="flex flex-wrap items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
+              <span class="inline-flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                {{ item.publish_date.strftime('%d %B %Y') }}
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                {{ item.photos|length }} foto
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                {{ item.videos|length }} video
+              </span>
+            </div>
+          </div>
+          <div class="flex flex-col items-end justify-between gap-2">
+            <a href="{{ url_for('berita_detail', news_id=item.id) }}" class="text-xs font-semibold px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100">Lihat</a>
+            <a href="{{ url_for('admin_news_edit', news_id=item.id) }}" class="text-xs font-semibold px-3 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100">Edit</a>
+            <form method="POST" action="{{ url_for('admin_news_delete', news_id=item.id) }}" onsubmit="return confirm('Yakin ingin menghapus berita ini?');">
+              <button type="submit" class="text-xs font-semibold px-3 py-2 rounded-lg bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-100">Hapus</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="text-center py-20 px-8">
+        <div class="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-3xl mx-auto mb-6 flex items-center justify-center">
+          <svg class="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-black text-gray-700 dark:text-gray-300 mb-2">Belum ada berita</h3>
+        <p class="text-gray-500 dark:text-gray-400 mb-8 max-w-sm mx-auto text-sm">Mulai buat berita pertama untuk membagikan informasi kepada komunitas UKM.</p>
+        <a
+          href="{{ url_for('add_news') }}"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all text-sm"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+          Buat Berita Pertama
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Instagram Section -->
+<div class="bg-gradient-to-br from-purple-900 via-pink-700 to-rose-500 rounded-3xl p-10 shadow-2xl text-white mt-12" data-scroll-reveal>
+  <div class="space-y-5 text-center">
+    <div class="inline-flex items-center justify-center gap-3 rounded-3xl bg-white/10 px-6 py-4 mx-auto text-sm font-semibold text-white/90">
+      <svg class="w-6 h-6 text-pink-200" fill="currentColor" viewBox="0 0 24 24">
+        <path
+          d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
+        />
+      </svg>
+      Instagram Sudin PPKUKM
+    </div>
+    <p class="max-w-2xl mx-auto text-sm text-white/80">Ikuti Instagram resmi Sudin PPKUKM untuk mendapatkan update terbaru tentang kegiatan, pelatihan, bazar, dan informasi UKM lainnya.</p>
+    <a href="https://www.instagram.com/sudinppkukmjakbar/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-2xl bg-white text-pink-700 px-5 py-3 text-sm font-bold hover:bg-white/90 transition">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+        <path
+          d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
+        />
+      </svg>
+      Lihat Instagram @sudinppkukmjakbar
+    </a>
+  </div>
+</div>
+{% endblock %}
